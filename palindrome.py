@@ -4,6 +4,14 @@ from lib import PalindromeFinder, JSONFileKeyReader
 
 
 def process_file(file_path):
+    """
+    Given a file path, extracts palindromes or reports error if the file does not exists.
+
+    Args:
+        file_path (str): a path to look for a file to extract palindromes
+    Returns:
+        list: A list of strings, everyone of which is a palindrome
+    """
     try:
         palindrome_finder = PalindromeFinder(JSONFileKeyReader(file_path))
         return palindrome_finder.get_palindromes()
@@ -11,7 +19,12 @@ def process_file(file_path):
         print('\nFile not found in the specified path: {}\n'.format(file_path), file=sys.stderr)
         exit(1)
 
+
 def main():
+    """
+    Main program. Parses the command line to obtain a file path to seach for palindromes and
+    print them along with the number of palindromes found
+    """
     parser = argparse.ArgumentParser(description='Read palindromes from JSON file')
     parser.add_argument('file_path', type=str, help='patht to JSON input file')
     args = parser.parse_args()
