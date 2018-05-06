@@ -1,8 +1,10 @@
 import unittest
 import io
+import os
 from unittest import mock
 
 from lib import PalindromeFinder, JSONFileKeyReader
+from web import app
 
 
 class IsPalindromeTestCase(unittest.TestCase):
@@ -76,6 +78,44 @@ class GetPalindromeJSONKeyFileTestCase(unittest.TestCase):
         self.assertEqual(len(palindromes), 2)
         self.assertEqual(palindromes[0], 'racecar')
         self.assertEqual(palindromes[1], 'civic')
+
+
+class GetPalindromesWebServiceTestCase(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.client = app.test_client()
+
+    def test_get_palindromes(self):
+        resp = self.client.get('/palindromes')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.data.split(b'\n'), [b'racecar', b'gig', b''])
+
+    def test_bad_configuration(self):
+        with mock.patch('os.environ.get', create=True) as mock_envget:
+            mock_envget.return_value = '/some/random/path'
+            resp = self.client.get('/palindromes')
+        self.assertEqual(resp.status_code, 500)
+        self.assertEqual(resp.data, b'Server improperly configured')
+
+
+class CountPalindromesWebServiceTestCase(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.client = app.test_client()
+    
+    def test_count_palindromes(self):
+        resp = self.client.get('/palindromes/count')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(int(resp.data), 2)
+
+    def test_bad_configuration(self):
+        with mock.patch('os.environ.get', create=True) as mock_envget:
+            mock_envget.return_value = '/some/random/path'
+            resp = self.client.get('/palindromes/count')
+        self.assertEqual(resp.status_code, 500)
+        self.assertEqual(resp.data, b'Server improperly configured')
 
 
 if __name__ == '__main__':
