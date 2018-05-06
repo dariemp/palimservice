@@ -9,7 +9,7 @@ class PalindromeFinder(object):
         Initializes a PalindromeFinder instance with a given source stream
     
         Args:
-            source_stream: a file-like object with a readlines() methods
+            source_stream: a file-like object with a readlines() method
         """
         self._source_stream = source_stream
 
@@ -18,14 +18,19 @@ class PalindromeFinder(object):
         Detect if a word is a palindrome
 
         Args:
-            word: a string to check if it is palindrome
+            word (str): a string to check if it is palindrome
         Returns:
-            True is word is palindrom, false otherwise
+            bool: True if word is a palindrome, false otherwise
         """
         return len(word) == 0 or (word[0] == word[-1] and self._is_palindrome(word[1:-1]))
 
     def get_palindromes(self):
-        """Get all lines that are palindromes in source stream"""
+        """
+        Get all lines that are palindromes in source stream
+
+        Returns:
+            list: A list of strings, everyone of which is a palindrome
+        """
         return [word for word in self._source_stream.readlines() if self._is_palindrome(word)]
 
 
@@ -37,7 +42,7 @@ class JSONFileKeyReader(object):
         Initializes a JSONFileKeyReader instance with a given file path
     
         Args:
-            file_path: a path to the file that must be read
+            file_path (str): a path to the file that must be read
         """
         self._file_path = file_path
 
@@ -45,6 +50,7 @@ class JSONFileKeyReader(object):
         """
         Reads lines of the underlying file and parses JSON data to extract values corresponding to key \"key\".
         It works as a generator upon which it's possible to iterate.
+
         Raises:
             FileNotFoundError: if a file can't be found in the location provided by the file path
         """
