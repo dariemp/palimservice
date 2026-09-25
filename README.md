@@ -2,9 +2,9 @@
 
 ### INSTALLATION
 
-#### 1.- Create a virtualenv with Python 3.5:
+#### 1.- Create a virtualenv with Python 3.10 or newer:
 ```
-$ virtualenv -p /usr/bin/python3.5 <some_name>
+$ python3 -m venv <some_name>
 ```
 
 #### 2.- Install all required packages:
